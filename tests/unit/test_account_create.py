@@ -7,5 +7,8 @@ class TestAccount:
         assert account.first_name == "John"
         assert account.last_name == "Doe"
         assert account.pesel == "12345678912"
-        assert len(account.pesel) == 11, 'TESTEST' 
+        # assert len(account.pesel) == 11, 'TESTEST' 
+        if len(account.pesel) != 11:
+            account.pesel = "Invalid"
+            raise AssertionError("Invalid pesel length")
         assert account.balance == 0
