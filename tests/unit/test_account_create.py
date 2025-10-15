@@ -23,3 +23,23 @@ class TestAccount:
     def test_pesel_too_empty(self):
         account = Account("Aclie", "Johnson", "")
         assert account.pesel == "Invalid"
+        
+        
+    
+    
+    def test_code_is_valid(self):
+        account = Account("Marek", "Kowalski", "12345678912", "PROM_ab1")
+        assert account.balance == 50.0
+    
+    # def test_code_is_none(self):
+    #     account = Account("Marek", "Kowalski", "12345678912", "")
+    #     assert account.promo_code == "None"
+    
+    def test_invalid_code_prefix(self):
+        account = Account("Marek", "Kowalski", "12345678912", "PRxM_ab1")
+        assert account.balance == 0.0
+        
+    def test_invalid_code_suffix(self):
+        account = Account("Marek", "Kowalski", "12345678912", "PROM_ab1G")
+        assert account.balance == 0.0
+        
