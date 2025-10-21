@@ -28,18 +28,32 @@ class TestAccount:
     
     
     def test_code_is_valid(self):
-        account = Account("Marek", "Kowalski", "12345678912", "PROM_ab1")
+        account = Account("Marek", "Kowalski", "12282978912", "PROM_ab1")
         assert account.balance == 50.0
     
-    # def test_code_is_none(self):
-    #     account = Account("Marek", "Kowalski", "12345678912", "")
-    #     assert account.promo_code == "None"
-    
     def test_invalid_code_prefix(self):
-        account = Account("Marek", "Kowalski", "12345678912", "PRxM_ab1")
+        account = Account("Marek", "Kowalski", "12282978912", "PRxM_ab1")
         assert account.balance == 0.0
         
     def test_invalid_code_suffix(self):
-        account = Account("Marek", "Kowalski", "12345678912", "PROM_ab1G")
+        account = Account("Marek", "Kowalski", "12282978912", "PROM_ab1G")
+        assert account.balance == 0.0
+        
+        
+        
+    def test_year_2012(self):
+        account = Account("Marek", "Kowalski", "12282978912", "PROM_ab1") #34 - 2000+
+        assert account.balance == 50.0
+    
+    def test_year_1965(self):
+        account = Account("Marek", "Kowalski", "65031278912", "PROM_ab1")
+        assert account.balance == 50.0
+
+    def test_year_1990(self):
+        account = Account("Marek", "Kowalski", "90031578912", "PROM_ab1")
+        assert account.balance == 50.0
+
+    def test_year_1939(self):
+        account = Account("Marek", "Kowalski", "39031378912", "PROM_ab1")
         assert account.balance == 0.0
         

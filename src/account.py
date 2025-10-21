@@ -10,7 +10,7 @@ class Account:
         # else:
         #     self.pesel = "Invalid"
         
-        self.balance += 50.0 if self.is_promo_code_valid(promo_code) else 0.0
+        self.balance += 50.0 if self.is_promo_code_valid(promo_code) and self.year_is_after_1965(pesel) else 0.0
         
     def is_pesel_valid(self, pesel):
         if pesel and len(pesel) == 11:
@@ -21,4 +21,14 @@ class Account:
         if promo_code and promo_code.startswith("PROM_") and len(promo_code) == 8:
             return True
         return False
+    
+    def year_is_after_1965(self, pesel):
+        month = "".join( map( str, pesel[2:4]) )
+        year = "".join( map( str, pesel[:2]) ) 
+        print(month)
+        print(year)
+        
+        if ( int(month) < 20 ) and ( int(year) < 65 ):
+            return False
+        return True
     
