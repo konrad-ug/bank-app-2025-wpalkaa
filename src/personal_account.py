@@ -6,14 +6,8 @@ class PersonalAccount(Account):
         self.first_name = first_name
         self.last_name = last_name
         self.express_fee = 1.0
-        # self.balance = 0.0
         
         self.pesel = pesel if self.is_pesel_valid(pesel) else "Invalid"
-        # if self.is_pesel_valid(pesel):
-        #     self.pesel = pesel
-        # else:
-        #     self.pesel = "Invalid"
-        
         self.balance += 50.0 if self.is_promo_code_valid(promo_code) and self.year_is_after_1965(pesel) else 0.0
         
     

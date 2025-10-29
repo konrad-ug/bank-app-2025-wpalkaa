@@ -15,3 +15,7 @@ class Account:
         if amount > 0 and self.balance >= amount:
             self.transfer_send( amount, target )
             self.balance -= fee
+    
+    # To się nie wykonaw coverage
+    # def test(self):
+    #     return 2 + 4 == 4
