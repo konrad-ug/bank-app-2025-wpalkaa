@@ -17,5 +17,5 @@ class Account:
             self.balance -= fee
     
     # To się nie wykonaw coverage
-    # def test(self):
-    #     return 2 + 4 == 4
+    def test(self):
+        return 2 + 4 == 4
