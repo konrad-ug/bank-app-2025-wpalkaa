@@ -16,6 +16,6 @@ class Account:
             self.transfer_send( amount, target )
             self.balance -= fee
     
-    # To się nie wykonaw coverage
+    # To się nie wykona w coverage 
     # def test(self):
     #     return 2 + 4 == 4
