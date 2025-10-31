@@ -8,7 +8,8 @@ class TestExpressTransfer:
         account.balance = 200.0
         account_target.balance = 50.0
         
-        account.express_transfer(100.0, account_target, account.express_fee)
+        # account.express_transfer(100.0, account_target, account.express_fee)
+        account.express_transfer(100.0, account_target)
         
         assert account.balance == 95.0
         assert account_target.balance == 150.0
@@ -19,7 +20,8 @@ class TestExpressTransfer:
         account.balance = 200.0
         account_target.balance = 50.0
         
-        account.express_transfer(-100.0, account_target, account.express_fee)
+        # account.express_transfer(-100.0, account_target, account.express_fee)
+        account.express_transfer(-100.0, account_target)
         
         assert account.balance == 200.0
         assert account_target.balance == 50.0
@@ -30,7 +32,8 @@ class TestExpressTransfer:
         account.balance = 200.0
         account_target.balance = 50.0
         
-        account.express_transfer(200.0, account_target, account.express_fee)
+        # account.express_transfer(200.0, account_target, account.express_fee)
+        account.express_transfer(200.0, account_target)
         
         assert account.balance == -5.0
         assert account_target.balance == 250.0
@@ -43,7 +46,8 @@ class TestExpressTransfer:
         account.balance = 80.0
         account_target.balance = 0
         
-        account.express_transfer(70.0, account_target, account.express_fee)
+        # account.express_transfer(70.0, account_target, account.express_fee)
+        account.express_transfer(70.0, account_target)
         
         assert account.balance == 9.0
         assert account_target.balance == 70.0
@@ -54,7 +58,8 @@ class TestExpressTransfer:
         account.balance = 80.0
         account_target.balance = 0
         
-        account.express_transfer(-70.0, account_target, account.express_fee)
+        # account.express_transfer(-70.0, account_target, account.express_fee)
+        account.express_transfer(-70.0, account_target)
         
         assert account.balance == 80.0
         assert account_target.balance == 0.0
@@ -65,7 +70,8 @@ class TestExpressTransfer:
         account.balance = 70.0
         account_target.balance = 0
         
-        account.express_transfer(70.0, account_target, account.express_fee)
+        # account.express_transfer(70.0, account_target, account.express_fee)
+        account.express_transfer(70.0, account_target)
         
         assert account.balance == -1.0
         assert account_target.balance == 70.0
