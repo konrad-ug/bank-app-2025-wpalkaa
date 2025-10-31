@@ -1,20 +1,23 @@
 class Account:
     def __init__(self):
         self.balance = 0.0
+        self.history = []
+        self.express_fee = None
     
         # Metody
     def transfer_send(self, amount, target): 
         if amount > 0 and self.balance >= amount:
             self.balance -= amount 
             target.balance += amount
-    def transfer_get(self, amount):
-        self.balance += amount if amount > 0 else 0
+            self.history.append(-amount)
+            target.history.append(amount)
     
-    
-    def express_transfer(self, amount, target, fee):
+    def express_transfer(self, amount, target):
         if amount > 0 and self.balance >= amount:
             self.transfer_send( amount, target )
-            self.balance -= fee
+            self.balance -= self.express_fee
+            
+            self.history.append(-self.express_fee)
     
     # To się nie wykona w coverage 
     # def test(self):

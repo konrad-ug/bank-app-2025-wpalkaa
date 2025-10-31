@@ -6,7 +6,6 @@ class CompanyAccount(Account):
         super().__init__()
         self.company_name = company_name
         self.nip = nip if self.nip_valid(nip) else "Invalid"
-        self.balance = 0.0
         self.express_fee = 5.0
         
     
