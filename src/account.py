@@ -12,6 +12,10 @@ class Account:
             self.history.append(-amount)
             target.history.append(amount)
     
+    def balance_add(self, amount):
+        self.balance += amount
+        self.history.append(amount)
+    
     def express_transfer(self, amount, target):
         if amount > 0 and self.balance >= amount:
             self.transfer_send( amount, target )
