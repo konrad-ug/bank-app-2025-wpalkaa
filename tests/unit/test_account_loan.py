@@ -12,10 +12,10 @@ class TestLoans:
         #  yield               # <==== wywołuje test w którym jest użyta metoda i wykonuje coś po tym jeszcze
         #  account.balance = 0
     
-    @pytest.fixture
-    def company_account(self, autouse=True, scope="class"):
-        account = PersonalAccount("Comp", "Inc", "12345678912") # dla przykładu tylko
-        return account
+    # @pytest.fixture          # Taki inny przykład
+    # def company_account(self, autouse=True, scope="class"):
+    #    account = PersonalAccount("Comp", "Inc", "12345678912") 
+    #    return account
      
     def test_sumbit_loan_deposits(self, account):
         # account = PersonalAccount("John", "Doe", "12345678912")     
