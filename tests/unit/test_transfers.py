@@ -3,6 +3,12 @@ from src.company_account import CompanyAccount
 
 
 class TestTransfers:
+    def test_personal_balance_add(self):
+        account = PersonalAccount("Marcel", "Markowicz", "90031578912")
+        account.balance_add(500.0)
+        
+        assert account.balance == 500.0
+    
     # Feature 6
     def test_personal_transfer_send(self):
         account = PersonalAccount("Marcel", "Markowicz", "90031578912")
