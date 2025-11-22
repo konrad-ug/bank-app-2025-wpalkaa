@@ -9,6 +9,8 @@ surname: Pałka
 group: 4
 
 ## How to start the app
-
+"python3 -m coverage run --source=src -m pytest"
+"python3 -m coverage report"
+"python3 -m coverage html"
 
 ## How to execute tests
