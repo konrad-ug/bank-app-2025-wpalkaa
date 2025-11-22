@@ -20,7 +20,7 @@ import pytest
 
 
 # Feature 12
-class TestLoans:
+class TestPersonalLoans:
     @pytest.fixture
     def account(self):
         account = PersonalAccount("John", "Doe", "12345678912")
