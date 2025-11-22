@@ -10,7 +10,21 @@ class PersonalAccount(Account):
         self.pesel = pesel if self.is_pesel_valid(pesel) else "Invalid"
         self.balance += 50.0 if self.is_promo_code_valid(promo_code) and self.year_is_after_1965(pesel) else 0.0
         
-    
+        
+    def submit_for_loan(self, amount):
+        if len(self.history) < 5: return False
+        
+        ifDeposit = [i > 0 for i in self.history]
+        lastFiveSum = sum(self.history[-5:])
+        
+        if all(ifDeposit[-3:]) or lastFiveSum > amount:
+            self.balance += amount
+            self.history.append(amount)
+            return True        
+        else:
+            return False
+        
+        
     # Warunki konstruktora
     def is_pesel_valid(self, pesel):
         if pesel and len(pesel) == 11:
