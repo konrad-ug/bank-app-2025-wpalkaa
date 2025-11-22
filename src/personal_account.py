@@ -17,7 +17,7 @@ class PersonalAccount(Account):
         ifDeposit = [i > 0 for i in self.history]
         lastFiveSum = sum(self.history[-5:])
         
-        if all(ifDeposit) or lastFiveSum > amount:
+        if all(ifDeposit[-3:]) or lastFiveSum > amount:
             self.balance += amount
             self.history.append(amount)
             return True        
