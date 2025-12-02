@@ -16,9 +16,13 @@ def create_account():
 @app.route("/api/accounts", methods=['GET'])
 def get_all_accounts():
     print("Get all accounts request received")
-    accounts = registry.list_accounts
-    accounts_data = [{"name": acc.first_name, "surname": acc.last_name, "pesel":
-acc.pesel, "balance": acc.balance} for acc in accounts]
+    accounts = registry.list_accounts()
+    accounts_data = [{
+        "name": acc.first_name, 
+        "surname": acc.last_name, 
+        "pesel": acc.pesel, 
+        "balance": acc.balance
+        } for acc in accounts]
     return jsonify(accounts_data), 200
 
 @app.route("/api/accounts/count", methods=['GET'])
@@ -31,7 +35,7 @@ def get_account_count():
 @app.route("/api/accounts/<pesel>", methods=['GET'])
 def get_account_by_pesel(pesel):
     print("Get accounts by pesel request received")
-    account = registry.get_account_by_pesel(pesel)
+    account = registry.find_acc_by_pesel(pesel)
 
     if account:
         account_data ={
@@ -42,15 +46,39 @@ def get_account_by_pesel(pesel):
         }
         return jsonify(account_data), 200
     else:
+        print("Account not found")
         return jsonify({"message": "Account not found"}), 404
         
 
 @app.route("/api/accounts/<pesel>", methods=['PATCH'])
 def update_account(pesel):
-    #implementacja powinna znaleźć się tutaj
+    account = registry.find_acc_by_pesel(pesel)
+    if not account:
+        return jsonify({"message": "Account not found"}), 404
+    
+    data = request.get_json()
+    print(f"Update account request for pesel {pesel}: {data}")
+    
+    if "name" in data:
+        account.first_name = data["name"]
+    if "surname" in data:
+        account.last_name = data["surname"]
+    if "pesel" in data:
+        print("Pesel provided, doing nothing...")
+        
+    print("Account now: ", account.first_name, account.last_name, account.pesel)
     return jsonify({"message": "Account updated"}), 200
+
 
 @app.route("/api/accounts/<pesel>", methods=['DELETE'])
 def delete_account(pesel):
-    #implementacja powinna znaleźć się tutaj
+    print(f"Delete account request for pesel {pesel}")
+    account = registry.find_acc_by_pesel(pesel)
+    if not account:
+        print("Account not found.")
+        return jsonify({"message": "Account not found"}), 404
+    
+    registry.delete_account(account)
+    print("Account deleted.")
+    
     return jsonify({"message": "Account deleted"}), 200
