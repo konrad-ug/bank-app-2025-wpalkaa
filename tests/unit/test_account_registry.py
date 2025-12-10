@@ -32,7 +32,6 @@ class TestAccountsRegistry:
         assert len(accountsRegistry.accounts) == 2
 
 
-
     def test_find_pesel(self, accountsRegistry, accounts):
 
         acc = accountsRegistry.find_acc_by_pesel("12282978912")
@@ -43,6 +42,13 @@ class TestAccountsRegistry:
         acc = accountsRegistry.find_acc_by_pesel("11111111111")
         assert acc is None
 
+
+    def test_delete_account(self, accountsRegistry):
+        acc = accountsRegistry.find_acc_by_pesel("12282978912")
+        accountsRegistry.delete_account(acc)
+
+        assert len(accountsRegistry.accounts) == 1
+        assert accountsRegistry.accounts[0].pesel == "06212978912"
 
 
     def test_account_list(self, accountsRegistry, accounts):

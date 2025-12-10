@@ -7,6 +7,8 @@ class AccountsRegistry:
 
     def add_account(self, account: PersonalAccount):
         self.accounts.append(account)
+    def delete_account(self, account: PersonalAccount):
+        self.accounts.remove(account)
 
     def find_acc_by_pesel(self, pesel):
         for account in self.accounts:
