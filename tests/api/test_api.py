@@ -36,7 +36,7 @@ class TestsApi:
         assert r.json()["message"] == 'Account created'
 
     def test_count(self):
-        response = requests.get(f"{url}{"/count"}")
+        response = requests.get(f"{url}{'/count'}")
 
         assert response.status_code == 200
         assert response.json()["count"] == 1
