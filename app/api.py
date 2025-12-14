@@ -12,7 +12,7 @@ def create_account():
     account = PersonalAccount(data["name"], data["surname"], data["pesel"])
     
     if registry.find_acc_by_pesel(data["pesel"]) is not None:
-        print(f"Error 409: Account {data["pesel"]} already exists")
+        print(f"Error 409: Account {data['pesel']} already exists")
         return jsonify(
             {
                 "message": "Account with that pesel already exists."
@@ -98,7 +98,7 @@ def delete_account(pesel):
 @app.route("/api/accounts/<pesel>/transfer", methods=['POST'])
 def transfer_funds(pesel):
     data = request.get_json()
-    print(f"A transfer for {data["amount"]} was ordered to {pesel}.")
+    print(f"A transfer for {data['amount']} was ordered to {pesel}.")
     
     account = registry.find_acc_by_pesel(pesel)
     if not account:
