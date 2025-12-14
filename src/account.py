@@ -5,24 +5,31 @@ class Account:
         self.express_fee = None
     
         # Metody
-    def transfer_send(self, amount, target): 
+    def outgoing_transfer(self, amount): 
         if amount > 0 and self.balance >= amount:
             self.balance -= amount 
-            target.balance += amount
             self.history.append(-amount)
-            target.history.append(amount)
-    
-    def balance_add(self, amount):
-        self.balance += amount
-        self.history.append(amount)
-    
-    def express_transfer(self, amount, target):
-        if amount > 0 and self.balance >= amount:
-            self.transfer_send( amount, target )
-            self.balance -= self.express_fee
             
-            self.history.append(-self.express_fee)
+            return True
+        return False
     
-    # To się nie wykona w coverage 
+    def incoming_transfer(self, amount):
+        if amount > 0:
+            self.balance += amount
+            self.history.append(amount)
+            
+            return True
+        return False
+    
+    def express_transfer(self, amount):
+        if amount > 0 and self.balance >= amount:
+            self.outgoing_transfer(amount)
+            self.balance -= self.express_fee
+            self.history.append(-self.express_fee)
+            return True
+        
+        return False
+    
+    # To się nie wykona w coverage (test czy działają)
     # def test(self):
     #     return 2 + 4 == 4
