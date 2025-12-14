@@ -3,63 +3,66 @@ from src.company_account import CompanyAccount
 
 
 class TestTransfers:
-    def test_personal_balance_add(self):
+    def test_personal_incoming(self):
         account = PersonalAccount("Marcel", "Markowicz", "90031578912")
-        account.balance_add(500.0)
+        result = account.incoming_transfer(500.0)
         
         assert account.balance == 500.0
-    
-    # Feature 6
-    def test_personal_transfer_send(self):
-        account = PersonalAccount("Marcel", "Markowicz", "90031578912")
-        account_target = PersonalAccount("Malina", "Lewandowska", "12345678912")
-        account.balance = 50.0
-        account.transfer_send(30.0, account_target)
+        assert result == True
         
-        assert account.balance == 20.0
-        assert account_target.balance == 30.0
-    
-    
-    def test_personal_transfer_send_no_money(self):
+    def test_personal_incoming_negative_value(self):
         account = PersonalAccount("Marcel", "Markowicz", "90031578912")
-        account_target = PersonalAccount("Malina", "Lewandowska", "12345678912")
-        
-        account.transfer_send(30.0, account_target)
+        result = account.incoming_transfer(-500.0)
         
         assert account.balance == 0.0
-        assert account_target.balance == 0.0
+        assert result == False
         
-        
-    def test_personal_transfer_send_negative(self):
+    # Feature 6
+    def test_personal_outgoing(self):
         account = PersonalAccount("Marcel", "Markowicz", "90031578912")
-        account_target = PersonalAccount("Malina", "Lewandowska", "12345678912")
-        account.transfer_send( -50.0, account_target)
-        
-        account.balance = 100.0
-        account_target.balance = 100.0
-        
-        assert account.balance == 100.0
-        assert account_target.balance == 100.0
-    
-    
-    def test_company_transfer_send(self):
-        account = CompanyAccount("Nazwa", "1234567890")
-        account_target = CompanyAccount("Nazwa", "1234567890")
-        account.balance = 100.0
-        account.transfer_send(80.0, account_target)
+        account.balance = 50.0
+        result = account.outgoing_transfer(30.0)
         
         assert account.balance == 20.0
-        assert account_target.balance == 80.0
+        assert result == True
+    
+    
+    def test_personal_outgoing_no_money(self):
+        account = PersonalAccount("Marcel", "Markowicz", "90031578912")
+        
+        result = account.outgoing_transfer(30.0)
+        
+        assert account.balance == 0.0
+        assert result == False
         
         
-    def test_company_transfer_send_negative(self):
-        account = CompanyAccount("Nazwa", "1234567890")
-        account_target = CompanyAccount("Nazwa", "1234567890")
+    def test_personal_outgoing_negative_value(self):
+        account = PersonalAccount("Marcel", "Markowicz", "90031578912")
         account.balance = 100.0
-        account.transfer_send( -100.0, account_target)
+        
+        result = account.outgoing_transfer(-50.0)
         
         assert account.balance == 100.0
-        assert account_target.balance == 0.0
+        assert result == False
+    
+    
+    def test_company_outgoing(self):
+        account = CompanyAccount("Nazwa", "1234567890")
+        account.balance = 100.0
+        
+        result = account.outgoing_transfer(80.0)
+        
+        assert account.balance == 20.0
+        assert result == True
+        
+        
+    def test_company_outgoing_negative_value(self):
+        account = CompanyAccount("Nazwa", "1234567890")
+        account.balance = 100.0
+        result = account.outgoing_transfer( -100.0)
+        
+        assert account.balance == 100.0
+        assert result == False
          
          
          

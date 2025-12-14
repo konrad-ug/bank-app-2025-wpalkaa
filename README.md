@@ -9,8 +9,10 @@ surname: Pałka
 group: 4
 
 ## How to start the app
-"python3 -m coverage run --source=src -m pytest"
-"python3 -m coverage report"
-"python3 -m coverage html"
+- python3 -m flask --app app/api.py --debug run --port 3001
 
 ## How to execute tests
+- python3 -m coverage run --source=src -m pytest tests/unit
+- python3 -m coverage run --source=src -m pytest tests/api
+- python3 -m coverage report
+- python3 -m coverage html

@@ -1,0 +1,98 @@
+import requests
+import pytest
+
+url = 'http://localhost:3001/api/accounts/'
+# url = 'http://localhost:3001/api/accounts/<pesel>/transfer'
+
+class TestsApiTransfers:
+    
+    @pytest.fixture(scope="function", autouse=True)
+    def set_up(self):
+        data = {
+            "name": "james",
+            "surname": "hetfield",
+            "pesel": "89092909825",
+            "balance": "100.0"
+        }
+        r = requests.post(url, json=data)
+        assert r.status_code == 201
+
+        yield
+
+        r = requests.get(url)
+        for account in r.json():
+            pesel = account["pesel"]
+            requests.delete(f"{url}/{pesel}")
+
+# ================== TESTS ==================
+
+
+    def test_transfer_account_not_found(self):
+        data = {
+            "amount": "100.0",
+            "type": "incoming"
+        }
+        targetPesel = "89092900000"
+        
+        r = requests.post(f"{url}/{targetPesel}/transfer", json=data)
+        
+        assert r.status_code == 404
+
+
+    def test_transfer_type_not_found(self):
+        data = {
+            "amount": "100.0",
+            "type": "spiderman"
+        }
+        targetPesel = "89092909825"
+        
+        r = requests.post(f"{url}/{targetPesel}/transfer", json=data)
+        
+        assert r.status_code == 400
+        
+
+    def test_incoming_transfer(self):
+        data = {
+            "amount": "100.0",
+            "type": "incoming"
+        }
+        targetPesel = "89092909825"
+        
+        r = requests.post(f"{url}/{targetPesel}/transfer", json=data)
+        
+        assert r.status_code == 200
+        
+        targetAccount = requests.get(url).json()
+        assert targetAccount["balance"] == "200.0"
+        
+    def test_outgoing_transfer(self):
+        data = {
+            "amount": "100.0",
+            "type": "outgoing"
+        }
+        targetPesel = "89092909825"
+        
+        r = requests.post(f"{url}/{targetPesel}/transfer", json=data)
+        
+        assert r.status_code == 200
+        
+        targetAccount = requests.get(url).json()
+        assert targetAccount["balance"] == "0.0"
+        
+    def test_express_transfer(self):
+        data = {
+            "amount": "50.0",
+            "type": "express"
+        }
+        targetPesel = "89092909825"
+        
+        r = requests.post(f"{url}/{targetPesel}/transfer", json=data)
+        
+        assert r.status_code == 200
+        
+        targetAccount = requests.get(url).json()
+        assert targetAccount["balance"] == "49.0"
+        
+    
+        
+    

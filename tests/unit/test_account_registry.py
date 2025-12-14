@@ -22,17 +22,31 @@ class TestAccountsRegistry:
 
 
 
-    def test_add_account(self, accounts ):
+    def test_add_account(self, accounts):
         accountsRegistry = AccountsRegistry()
         acc1, acc2 = accounts
 
-        accountsRegistry.add_account(acc1)
-        accountsRegistry.add_account(acc2)
+        result1 = accountsRegistry.add_account(acc1)
+        result2 = accountsRegistry.add_account(acc2)
 
         assert len(accountsRegistry.accounts) == 2
+        assert result1 == True
+        assert result2 == True
+        
+    def test_add_account_exists(self, accounts):
+        accountsRegistry = AccountsRegistry()
+        acc1, acc2 = accounts
+
+        result1 = accountsRegistry.add_account(acc1)
+        result2 = accountsRegistry.add_account(acc1)
+
+        assert len(accountsRegistry.accounts) == 1
+        assert result1 == True
+        assert result2 == False
 
 
-    def test_find_pesel(self, accountsRegistry, accounts):
+
+    def test_find_pesel(self, accountsRegistry):
 
         acc = accountsRegistry.find_acc_by_pesel("12282978912")
         assert acc == accountsRegistry.accounts[0]
@@ -49,6 +63,15 @@ class TestAccountsRegistry:
 
         assert len(accountsRegistry.accounts) == 1
         assert accountsRegistry.accounts[0].pesel == "06212978912"
+
+    def test_delete_account_doesnt_exist(self, accountsRegistry):
+        # acc = accountsRegistry.find_acc_by_pesel("12282978912") would work
+        acc = PersonalAccount("Marek", "Kowalski", "00000000000")
+        
+        result = accountsRegistry.delete_account(acc)
+
+        assert len(accountsRegistry.accounts) == 2
+        assert result == False
 
 
     def test_account_list(self, accountsRegistry, accounts):

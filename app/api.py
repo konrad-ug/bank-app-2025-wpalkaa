@@ -10,6 +10,16 @@ def create_account():
     data = request.get_json()
     print(f"Create account request: {data}")
     account = PersonalAccount(data["name"], data["surname"], data["pesel"])
+    
+    if registry.find_acc_by_pesel(data["pesel"]) is not None:
+        print(f"Error 409: Account {data["pesel"]} already exists")
+        return jsonify(
+            {
+                "message": "Account with that pesel already exists."
+            }
+        ), 409
+        
+    
     registry.add_account(account)
     return jsonify({"message": "Account created"}), 201
 
@@ -46,7 +56,7 @@ def get_account_by_pesel(pesel):
         }
         return jsonify(account_data), 200
     else:
-        print("Account not found")
+        print(f"Error 404: Account {pesel} not found")
         return jsonify({"message": "Account not found"}), 404
         
 
@@ -54,6 +64,7 @@ def get_account_by_pesel(pesel):
 def update_account(pesel):
     account = registry.find_acc_by_pesel(pesel)
     if not account:
+        print(f"Error 404: Account {pesel} not found.")
         return jsonify({"message": "Account not found"}), 404
     
     data = request.get_json()
@@ -75,10 +86,53 @@ def delete_account(pesel):
     print(f"Delete account request for pesel {pesel}")
     account = registry.find_acc_by_pesel(pesel)
     if not account:
-        print("Account not found.")
+        print(f"Error 404: Account {pesel} not found.")
         return jsonify({"message": "Account not found"}), 404
     
     registry.delete_account(account)
     print("Account deleted.")
     
     return jsonify({"message": "Account deleted"}), 200
+
+
+@app.route("/api/accounts/<pesel>/transfer", methods=['POST'])
+def transfer_funds(pesel):
+    data = request.get_json()
+    print(f"A transfer for {data["amount"]} was ordered to {pesel}.")
+    
+    account = registry.find_acc_by_pesel(pesel)
+    if not account:
+        return jsonify({"message": "Account not found"}), 404
+    
+    transferType = data["type"]
+    amount = data["amount"]
+    
+    match transferType:
+        case "incoming":
+            result = account.incoming_transfer(amount)
+        
+        case "outgoing":
+            result = account.outgoing_transfer(amount,pesel) 
+            
+        case "express":
+            result = account.express_transer(amount, pesel)
+            
+        case _:
+            print(f"Error 400: Type {transferType} not found.")
+            return jsonify({
+                "message": "Transfer type not found."
+            }), 400
+    
+    if result:
+        print(f"Request approved.")
+        
+        return jsonify({
+            "message": "Request approved."
+        }), 200
+        
+    else:
+        print(f"Error 422: Request was not approved. Insufficient balance or internal error.")
+        
+        return jsonify({
+            "message": "Request was not approved. Insufficient balance or internal error."
+        }), 422

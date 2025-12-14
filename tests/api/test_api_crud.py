@@ -1,7 +1,7 @@
 import requests
 import pytest
 
-url = 'http://localhost:5000/api/accounts'
+url = 'http://localhost:3001/api/accounts'
 
 class TestsApi:
     
@@ -25,15 +25,27 @@ class TestsApi:
 
     def test_create_account(self):
         data = {
-            "name": "james",
-            "surname": "hetfield",
-            "pesel": "89092909825"
+            "name": "Kuba",
+            "surname": "Rozpruwacz",
+            "pesel": "123652698"
         }
 
         r = requests.post(url, json=data)
         
         assert r.status_code == 201
         assert r.json()["message"] == 'Account created'
+        
+    def test_create_account_pesel_exists(self):
+        data = {
+            "name": "Jefrey",
+            "surname": "Henderson",
+            "pesel": "89092909825"
+        }
+        
+        r = requests.post(url, json=data)
+        
+        assert r.status_code == 409
+        assert r.json()["message"] == "Account with that pesel already exists."
 
     def test_count(self):
         response = requests.get(f"{url}{'/count'}")
