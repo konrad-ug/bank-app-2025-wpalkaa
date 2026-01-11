@@ -1,5 +1,6 @@
 from src.company_account import CompanyAccount
 import pytest
+import requests
 
 class TestCompanyAccount():
     def test_all_okay(self):
@@ -16,4 +17,10 @@ class TestCompanyAccount():
         with pytest.raises(ValueError, match="Company not registered!"):
             CompanyAccount("NIEMATAKIEJ", "1234567890")
             
-    
+    def test_nip_valid_in_mf_api_error(self, mocker):
+        account = CompanyAccount("KONRAD SOŁTYS", "8461627563")
+        mocker.patch('requests.get', side_effect=requests.exceptions.ConnectionError("Brak internetu"))
+
+        result = account.nip_valid_in_mf("8461627563")
+        
+        assert result is False
