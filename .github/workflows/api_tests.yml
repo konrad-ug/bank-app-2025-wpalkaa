@@ -37,5 +37,5 @@ jobs:
         export PYTHONPATH=$GITHUB_WORKSPACE
         flask run &
     - name: Execute API tests
-    run: |
-      python3 -m pytest tests/api
+      run: |
+        python3 -m pytest tests/api
