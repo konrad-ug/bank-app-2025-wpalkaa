@@ -10,7 +10,6 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -31,11 +30,11 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Start flask
-    run: |
-      export FLASK_APP=app/api.py
-      export FLASK_ENV=development
-      export PYTHONPATH=$GITHUB_WORKSPACE
-      flask run &
+      run: |
+        export FLASK_APP=app/api.py
+        export FLASK_ENV=development
+        export PYTHONPATH=$GITHUB_WORKSPACE
+        flask run &
     - name: Execute Performance tests
-    run: |
-      python3 -m pytest tests/perf
+      run: |
+        python3 -m pytest tests/perf
