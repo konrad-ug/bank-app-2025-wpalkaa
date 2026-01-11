@@ -1,6 +1,8 @@
 from src.account import Account
 
 class PersonalAccount(Account):
+    history_email_text_template = "Personal account history:"
+    
     def __init__(self, first_name, last_name, pesel, promo_code=None):
         super().__init__()
         self.first_name = first_name

@@ -6,6 +6,7 @@ import os
 
 class CompanyAccount(Account):
     base_url = os.getenv("BANK_APP_MF_URL", "https://wl-api.mf.gov.pl/")
+    history_email_text_template = "Company account history:"
     
     
     def __init__(self, company_name, nip, promo_code=None):
