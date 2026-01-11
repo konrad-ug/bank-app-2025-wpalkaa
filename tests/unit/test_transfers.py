@@ -47,7 +47,7 @@ class TestTransfers:
     
     
     def test_company_outgoing(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         account.balance = 100.0
         
         result = account.outgoing_transfer(80.0)
@@ -57,7 +57,7 @@ class TestTransfers:
         
         
     def test_company_outgoing_negative_value(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         account.balance = 100.0
         result = account.outgoing_transfer( -100.0)
         

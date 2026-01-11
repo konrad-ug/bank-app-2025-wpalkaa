@@ -3,7 +3,7 @@ from src.personal_account import PersonalAccount
 
 class TestExpressTransfer:
     def test_company_express_perfect(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         account.balance = 200.0
         
         result = account.express_transfer(100.0)
@@ -12,7 +12,7 @@ class TestExpressTransfer:
         assert result == True
     
     def test_company_express_negative_value(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         account.balance = 200.0
         
         result = account.express_transfer(-100.0)
@@ -21,7 +21,7 @@ class TestExpressTransfer:
         assert result == False
     
     def test_company_express_fee_negative_balance(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         account.balance = 200.0
         
         result = account.express_transfer(200.0)

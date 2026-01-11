@@ -6,7 +6,7 @@ class TestsCompanyLoans:
     
     @pytest.fixture
     def account(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         return account
     
     @pytest.mark.parametrize("history, amount, expected_result, expected_balance", [

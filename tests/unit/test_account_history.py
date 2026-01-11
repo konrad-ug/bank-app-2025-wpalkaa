@@ -21,7 +21,7 @@ class TestHistory:
         
         
     def test_company_transfer_history(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         account.balance = 50.0
         
         account.express_transfer(20.0)
@@ -30,7 +30,7 @@ class TestHistory:
         
         
     def test_company_express_transfer_history(self):
-        account = CompanyAccount("Nazwa", "1234567890")
+        account = CompanyAccount("Nazwa", "8461627563")
         account.balance = 60.0
         
         account.express_transfer(50.0)
