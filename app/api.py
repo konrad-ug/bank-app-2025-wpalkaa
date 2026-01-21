@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
 from src.accounts_registry import AccountsRegistry
 from src.personal_account import PersonalAccount
+from src.mongo_accounts_repository import MongoAccountsRepository
+
 
 app = Flask(__name__)
 registry = AccountsRegistry()
+accounts_repository = MongoAccountsRepository()
 
 @app.route("/api/accounts", methods=['POST'])
 def create_account():
@@ -136,3 +139,47 @@ def transfer_funds(pesel):
         return jsonify({
             "message": "Request was not approved. Insufficient balance or internal error."
         }), 422
+        
+        
+# MONGO
+
+@app.route('/api/accounts/save', methods=["POST"])
+def save_accounts():
+    print("[Info]: Save accounts registry request received.")
+    accounts = registry.list_accounts()
+    
+    if len(accounts) == 0:
+        return jsonify({
+            "message": "No accounts to save"
+        }), 400
+    
+    accounts_repository.save_all(accounts)
+    registry.accounts = []
+    print("[Info]: Accounts saved. Cleaning registry...")
+    
+    return jsonify({
+        "message": "Accounts successfully saved to MongoDB"
+    }), 200
+    
+    
+@app.route('/api/accounts/load', methods=["POST"])
+def load_accounts():
+    print("[Info]: Load accounts to registry request received.")
+    registry.accounts = []
+    
+    data = accounts_repository.load_all()
+    print(f"Otrzymałem: \n{data}")
+    
+    accounts = [{
+        "name": acc["first_name"], 
+        "surname": acc["last_name"],
+        "pesel": acc["pesel"], 
+        "balance": acc["balance"]
+        } for acc in data]
+    
+    registry.accounts = accounts
+    
+    return jsonify({
+        "message": "Accounts successfully loaded",
+        "accounts: " : accounts
+    }), 200
