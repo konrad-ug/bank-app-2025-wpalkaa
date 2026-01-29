@@ -40,6 +40,9 @@ jobs:
     - name: start mongo
       run: |
         docker compose -f mongo.yml up -d
+    - name: wait for mongo
+      run: |
+        sleep 15
     - name: Execute API tests
       run: |
         python3 -m pytest tests/api
