@@ -16,3 +16,6 @@ group: 4
 - python3 -m coverage run --source=src -m pytest tests/api
 - python3 -m coverage report
 - python3 -m coverage html
+
+## How to start database
+- docker compose -f mongo.yml up -d

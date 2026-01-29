@@ -6,7 +6,7 @@ from src.mongo_accounts_repository import MongoAccountsRepository
 
 app = Flask(__name__)
 registry = AccountsRegistry()
-accounts_repository = MongoAccountsRepository()
+database = MongoAccountsRepository()
 
 @app.route("/api/accounts", methods=['POST'])
 def create_account():
@@ -115,10 +115,12 @@ def transfer_funds(pesel):
             result = account.incoming_transfer(amount)
         
         case "outgoing":
-            result = account.outgoing_transfer(amount,pesel) 
+            # result = account.outgoing_transfer(amount,pesel) 
+            result = account.outgoing_transfer(amount)
             
         case "express":
-            result = account.express_transer(amount, pesel)
+            # result = account.express_transer(amount, pesel)
+            result = account.express_transfer(amount)
             
         case _:
             print(f"Error 400: Type {transferType} not found.")
@@ -153,7 +155,7 @@ def save_accounts():
             "message": "No accounts to save"
         }), 400
     
-    accounts_repository.save_all(accounts)
+    database.save_all(accounts)
     registry.accounts = []
     print("[Info]: Accounts saved. Cleaning registry...")
     
@@ -167,19 +169,21 @@ def load_accounts():
     print("[Info]: Load accounts to registry request received.")
     registry.accounts = []
     
-    data = accounts_repository.load_all()
+    data = database.load_all()
     print(f"Otrzymałem: \n{data}")
     
-    accounts = [{
-        "name": acc["first_name"], 
-        "surname": acc["last_name"],
-        "pesel": acc["pesel"], 
-        "balance": acc["balance"]
-        } for acc in data]
-    
-    registry.accounts = accounts
+    for acc in data:
+        name = acc['first_name'] 
+        surname = acc['last_name']
+        pesel = acc['pesel']
+        balance = acc['balance']
+        
+        account = PersonalAccount(name, surname, pesel)
+        account.balance = balance 
+
+        registry.add_account(account)
     
     return jsonify({
         "message": "Accounts successfully loaded",
-        "accounts: " : accounts
+        "accounts": len(registry.accounts)
     }), 200

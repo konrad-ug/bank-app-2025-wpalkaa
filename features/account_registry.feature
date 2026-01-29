@@ -32,3 +32,15 @@ Scenario: User is able to delete created account
     When I delete account with pesel: "01092909876"
     Then Account with pesel "01092909876" does not exist in registry
     And Number of accounts in registry equals: "0"
+
+
+Scenario: User is able to make an incoming transfer
+    Given I create an account using name: "kurt", last name: "cobain", pesel: "89092909246"
+    When I make an incoming transfer of "1000" to account with pesel "89092909246"
+    Then Account with pesel "89092909246" has "balance" equal to "1000"
+
+Scenario: User is able to make an outgoing transfer
+    Given I create an account using name: "mariusz", last name: "pudzianowski", pesel: "12345678901"
+    And I make an incoming transfer of "500" to account with pesel "12345678901"
+    When I make an outgoing transfer of "200" from account with pesel "12345678901"
+    Then Account with pesel "12345678901" has "balance" equal to "300"
