@@ -5,8 +5,8 @@ class AccountsRepository(ABC):
     
         @abstractmethod
         def save_all(self, accounts: list):
-            pass
+            pass # pragma: no cover
         
         @abstractmethod
         def load_all(self, accounts: list):
-            pass
+            pass # pragma: no cover
