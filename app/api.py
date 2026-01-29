@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
 from src.accounts_registry import AccountsRegistry
 from src.personal_account import PersonalAccount
+from src.mongo_accounts_repository import MongoAccountsRepository
+
 
 app = Flask(__name__)
 registry = AccountsRegistry()
+database = MongoAccountsRepository()
 
 @app.route("/api/accounts", methods=['POST'])
 def create_account():
@@ -112,10 +115,12 @@ def transfer_funds(pesel):
             result = account.incoming_transfer(amount)
         
         case "outgoing":
-            result = account.outgoing_transfer(amount,pesel) 
+            # result = account.outgoing_transfer(amount,pesel) 
+            result = account.outgoing_transfer(amount)
             
         case "express":
-            result = account.express_transer(amount, pesel)
+            # result = account.express_transer(amount, pesel)
+            result = account.express_transfer(amount)
             
         case _:
             print(f"Error 400: Type {transferType} not found.")
@@ -136,3 +141,49 @@ def transfer_funds(pesel):
         return jsonify({
             "message": "Request was not approved. Insufficient balance or internal error."
         }), 422
+        
+        
+# MONGO
+
+@app.route('/api/accounts/save', methods=["POST"])
+def save_accounts():
+    print("[Info]: Save accounts registry request received.")
+    accounts = registry.list_accounts()
+    
+    if len(accounts) == 0:
+        return jsonify({
+            "message": "No accounts to save"
+        }), 400
+    
+    database.save_all(accounts)
+    registry.accounts = []
+    print("[Info]: Accounts saved. Cleaning registry...")
+    
+    return jsonify({
+        "message": "Accounts successfully saved to MongoDB"
+    }), 200
+    
+    
+@app.route('/api/accounts/load', methods=["POST"])
+def load_accounts():
+    print("[Info]: Load accounts to registry request received.")
+    registry.accounts = []
+    
+    data = database.load_all()
+    print(f"Otrzymałem: \n{data}")
+    
+    for acc in data:
+        name = acc['first_name'] 
+        surname = acc['last_name']
+        pesel = acc['pesel']
+        balance = acc['balance']
+        
+        account = PersonalAccount(name, surname, pesel)
+        account.balance = balance 
+
+        registry.add_account(account)
+    
+    return jsonify({
+        "message": "Accounts successfully loaded",
+        "accounts": len(registry.accounts)
+    }), 200

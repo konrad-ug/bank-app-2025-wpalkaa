@@ -26,6 +26,14 @@ class PersonalAccount(Account):
         else:
             return False
         
+    def to_dict(self):
+        return {
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "pesel": self.pesel,
+            "balance": self.balance,
+            "history": self.history
+        }
         
     # Warunki konstruktora
     def is_pesel_valid(self, pesel):

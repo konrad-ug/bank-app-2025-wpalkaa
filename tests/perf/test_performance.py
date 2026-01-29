@@ -1,7 +1,7 @@
 import pytest
 import requests
 
-API_URL = "http://127.0.0.1:3005/api/accounts"
+API_URL = "http://127.0.0.1:3001/api/accounts"
 TIMEOUT = 0.5
 
 class TestApiPerformance:
