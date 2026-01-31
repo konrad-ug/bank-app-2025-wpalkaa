@@ -7,9 +7,9 @@ TIMEOUT = 0.5
 class TestApiPerformance:
     def test_create_delete_account_100_times(self):
         data = {
-            "name": "james",
-            "surname": "hetfield",
-            "pesel": "89092909825"
+            "name": "Mariusz",
+            "surname": "Pudziszaszkowski",
+            "pesel": "89092901234"
         }
 
         for i in range(100):
@@ -23,7 +23,7 @@ class TestApiPerformance:
         data = {
             "name": "james",
             "surname": "hetfield",
-            "pesel": "89092909825"
+            "pesel": "12342909825"
         }
         r = requests.post(API_URL, json=data)
         
